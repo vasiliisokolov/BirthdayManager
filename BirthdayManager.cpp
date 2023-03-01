@@ -38,28 +38,35 @@ int main()
     std::time_t d = std::time(nullptr);
     std::tm currentDate = *std::localtime(&d);
     profile find;
-    find.date.tm_yday = 365;
+    find.date = *std::localtime(&d);
+    find.date.tm_mon = 11;
+    find.date.tm_mday = 31;
+    /*find.date.tm_yday = 365;
     std::cout << std::put_time(&find.date, "%d/%m/%y") << std::endl;
-    std::cout << std::put_time(&currentDate, "%d/%m/%y") << std::endl;
+    std::cout << std::put_time(&currentDate, "%d/%m/%y") << std::endl;*/
     for (int i = 0; i < list.size(); ++i)
     {
         
-        if (list[i].date.tm_yday == currentDate.tm_yday)
+        if (list[i].date.tm_mon == currentDate.tm_mon && list[i].date.tm_mday == currentDate.tm_mday)
         {
+            /*std::cout << std::put_time(&list[i].date, "%d/%m/%y") << std::endl;
             std::cout << list[i].date.tm_yday << std::endl;
-            std::cout << currentDate.tm_yday << std::endl;
+            std::cout << std::put_time(&currentDate, "%d/%m/%y") << std::endl;
+            std::cout << currentDate.tm_yday << std::endl;*/
             std::cout << "Today (" << std::put_time(&list[i].date, "%d/%m/%y") << ") is " << list[i].name << "'s Birth Day!" << std::endl;
             return 0;
             
         }
-        else if (list[i].date.tm_yday > currentDate.tm_yday && list[i].date.tm_yday < find.date.tm_yday)
+        else if ((list[i].date.tm_mon >= currentDate.tm_mon && list[i].date.tm_mday > currentDate.tm_mday) 
+            && (list[i].date.tm_mon <= find.date.tm_mon && list[i].date.tm_mday < find.date.tm_mday))
         {
-            //std::cout << find.name << std::endl;
-            //std::cout << list[i].name << std::endl;
+            
             find.name = list[i].name;
-            find.date = list[i].date;
+            find.date.tm_mon = list[i].date.tm_mon;
+            find.date.tm_mday = list[i].date.tm_mday;
+            
         }
     }
-    std::cout << "Nearest is " << find.name <<"'s Birth Day (" << std::put_time(&find.date, " % d / % m / % y") << ")" << std::endl;
+    std::cout << "Nearest is " << find.name <<"'s Birth Day (" << std::put_time(&find.date, "%d/%m/%y") << ")" << std::endl;
 }
 
